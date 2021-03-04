@@ -1,5 +1,7 @@
 # OSCP Scripts
-Utility scripts for the OSCP exam
+Scripts and notes for the OSCP exam
+
+## Utilities
 
 ## Recon / Enumeration 
 
