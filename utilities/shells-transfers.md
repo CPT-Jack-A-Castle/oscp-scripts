@@ -1,5 +1,3 @@
- useful CLI utilities for file transfers and shells
-
 ## File Transfers
 - netcat
 	- send wget.exe to a nc listener on port 4444:
