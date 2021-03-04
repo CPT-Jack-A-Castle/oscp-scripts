@@ -1,5 +1,4 @@
-# Utilities 
-useful CLI utilities 
+ useful CLI utilities for file transfers and shells
 
 ## File Transfers
 - netcat
