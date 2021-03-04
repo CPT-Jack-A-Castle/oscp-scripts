@@ -3,15 +3,15 @@ useful CLI utilities
 
 ## File Transfers
 - netcat
-	- send wget.exe to a nc listener on port 4444
+	- send wget.exe to a nc listener on port 4444:
 `nc -nv {ip-address} 4444 < /usr/share/windows-resources/binaries/wget.exe`
-	- receive a file on port 4444 and name it wget.exe
+	- receive a file on port 4444 and name it wget.exe:
 `nc -nlvp 4444 > wget.exe`
 
 - socat
-	- Share a file called passwords.txt on port 443
+	- Share a file called passwords.txt on port 443:
 `sudo socat TCP4-LISTEN:443,fork file:passwords.txt`
-	- Receive a file being hosted on port 443 and save it to passwords.txt
+	- Receive a file being hosted on port 443 and save it to passwords.txt:
 `socat TCP4:{ip-address}:443 file:passwords.txt,create`
 
 ## Reverse Shells
