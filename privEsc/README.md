@@ -11,4 +11,4 @@
 
 # Windows Privilege Escalation 
 
-## Checklist
+## Windows Checklist
