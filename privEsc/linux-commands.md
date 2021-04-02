@@ -1,5 +1,5 @@
 # Basic Enumeration Commands
-## users and groups 
+## Users and Groups 
 - `whoami` , `id` 
 - `cat /etc/passwd`
 - `hostname`
@@ -8,7 +8,7 @@
 - `cat /etc/issue` 
 - `uname -a`
 
-## processes/applications
+## Processes/Applications
 - `ps aux`
 - `dpkg -l`
 
