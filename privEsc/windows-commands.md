@@ -31,7 +31,7 @@
 - show services 
     - `sc query state=all`
 
-# Enumerating files
+## Enumerating files
 - search registry for a password
     - `reg query HKLM /f password /t REG_SZ /s`
 - search files for passwords

@@ -12,11 +12,11 @@
 - `ps aux`
 - `dpkg -l`
 
-# Enumerating files
+## Enumerating files
 - `find / -writable -type d 2>/dev/null` 
 - `find / -type f \( -iname "*.conf" -or -iname "*.config" \)  -writable  -exec ls -lthr "{}" 2>/dev/null  \;`
 - `ls -la ~/.ssh`
 
-# Enumerating Scheduled Tasks
+## Enumerating Scheduled Tasks
 - `ls -lah /etc/cron*`
 - `cat /etc/crontab`
