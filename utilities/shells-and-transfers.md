@@ -66,7 +66,7 @@ Utilize SSL certificates to encrypt data sent between hosts
 
 ## Other Windows Shell-like options
 - RDP
-	- Create a regfile.reg file with `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TerminalService`
+	- Create a regfile.reg file with `HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TerminalService` inside
 	- `"fDenyTSConnections"=dword:00000000"`
 	- `reg import regfile.reg`
 	- `net start "termservice"`
