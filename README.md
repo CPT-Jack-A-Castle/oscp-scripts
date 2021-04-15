@@ -1,5 +1,5 @@
 # OSCP Scripts
-Scripts and notes for the OSCP exam
+Scripts, techniques, and notes for the OSCP exam
 
 ## Utilities
 - [Shells & File Transfers](https://github.com/dopamin3rgic/oscp-scripts/blob/main/utilities/shells-and-transfers.md)
@@ -8,8 +8,13 @@ Scripts and notes for the OSCP exam
 
 ## Exploitation 
 
-## PrivEsc 
-- [High Level Checklist](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/README.md)
-- [Useful Scripts](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/scripts/README.md)
-- [Linux Commands](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/linux-commands.md)
-- [Windows Commands](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/windows-commands.md)
+## [PrivEsc](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/README.md) 
+### Linux
+- [Linux PrivEsc Notes](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/linux-checklist.md)
+- [Linux PrivEsc Tools](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/scripts/linux/)
+- [Linux Useful Commands](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/linux-commands.md)
+
+### Windows
+- [Windows PrivEsc Notes](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/windows-checklist.md)
+- [Windows PrivEsc Tools](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/scripts/windows/privesc-tools.md)
+- [Windows Useful Commands](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/windows-commands.md)
