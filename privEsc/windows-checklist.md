@@ -37,12 +37,36 @@
     - SAM
         - SAM file contains user password hashes and the hashes are encrypted with a key found in the SYSTEM file. 
         - Potential file locations:
-            - C:\Windows\System32\config
-            - C:\Windows\Repair
-            - C:\Windows\System32\config\RegBack
+            - `C:\Windows\System32\config`
+            - `C:\Windows\Repair`
+            - `C:\Windows\System32\config\RegBack`
         - if readable, copy these files back to kali, dump them with pwdump, and try to crack with hashcat
     - Pass the Hash
         - Some services will accept hashes instead of passwords. If you can grab hashes you can use pth-winexe to pawn a command prompt
+4. Scheduled Tasks 
+    - tasks that get executed periodically or triggered by an event. Usually at the privs of the creator, but can be made to run as SYSTEM or admin.
+    - can sometimes query for these, but usually have to rely on clues like finding scripts or log files
+5. Insecure GUI Apps 
+    - on older versions of Windows, certain GUI apps run with administrator privileges. You can try to spawn a command prompt from within the app with builtin Windows functionality.
+        -  For example, if a program has the ability to open a file, you may try to open a command prompt by typing `file://c:/windows/system32/cmd.exe` 
+6. Startup Apps
+    - Programs to run at startup by creating shortcuts (.lnk files) to the programs in `C:\ProgramData\Microsoft\Windows\Start Menu\ Programs\StartUp` (Global directory)
+    - if you can write files in this directory, you can drop a reverse shell executable here. 
+7. Installed Applications
+    - Enumerate running programs and notice anything "interesting"
+        - `tasklist /v`
+        - `./seatbelt.exe NonstandardProcesses`
+        - `./winPEASany.exe quiet processinfo`
+    - Check versions using /? , -h, or config files in the Program Files directory
+    - Search exploitdb for a corresponding exploit
+8. Hot Potato
+    - Spoofing + NTLM relay attack. works on Windows 7, 8, and early versions of 10
+    - [Blog] (https://pentestlab.blog/2017/04/13/hot-potato/)
+9. Token Impersonation
+    - Service accounts usually have SeImpersonate and SeAssignPrimaryToken privileges enabled, which allow the Service account to impersonate the access tokens of users, including SYSTEM. 
+    - Juicy Potato, Rogue Potato, PrintSpoofer
+10. Port Forwarding
+    - Run exploit code on calling and forward it to an internal port on Windows using plink
 11. Kernel Exploit
     - Should be a last resort, pretty often it crashes the system.
     - Tools: 
@@ -57,3 +81,4 @@
 # Resources
 - [HackTricks Book Checklist](https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation)
 - [pwdump](https://github.com/Neohapsis/creddump7.git)
+- [PayloadsAllTheThings' Windows PrivEsc Methods](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md)

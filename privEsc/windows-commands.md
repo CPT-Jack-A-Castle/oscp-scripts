@@ -1,5 +1,5 @@
 # Useful Windows Enumeration Commands
-## Users, Groups, Networking
+## Users, Groups, Networking, Host
 - `echo %USERNAME%`
 - list local admins
     - `net localgroup "Administrators"`
@@ -13,10 +13,12 @@
 - listening ports
     - `netstat -an | findstr LISTENING`
 - PSA: `NT AUTHORITY\INTERACTIVE` is a psuedo-group for all user that can log on to the system locally
-
-##  OS/Arch
 - Get OS version
     - `ver`
+- check user privs
+    - `whoami /priv`
+    - for service accounts, check to see if SeImpersonate / SeAssignPrimaryToken are enabled
+    - “disabled” in the state column is irrelevant here. If the privilege is listed, your user has it
 
 ## Domain commands
 - `net user /domain`
@@ -26,9 +28,13 @@
 - list Password Policy
     - `net accounts /domain`
 
-## Processes/Applications
+## Processes/Applications/Tasks
 - list remote processes/services
-    - `tasklist /svc`
+    - `tasklist /v /svc`
+- see all scheduled tasks the user has access to
+    - cmd: `schtasks /query /fo LIST /v`
+    - PS: `Get-ScheduledTask | where {$_.TaskPath -notlike "\Microsoft*"} | ft TaskName,TaskPath,State`
+
 ## Enumerating files & directories
 - search files for passwords
     - `findstr /si password *.txt | *.xml | *.xls | *.ini`
@@ -87,3 +93,4 @@
 - search for saved credentials & exploit them
     - `cmdkey /list`
     - `runas /savecred /user:{user} C:\PrivEsc\reverse.exe `
+
