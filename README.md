@@ -18,3 +18,7 @@ Scripts, techniques, and notes for the OSCP exam
 - [Windows PrivEsc Notes](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/windows-checklist.md)
 - [Windows PrivEsc Tools](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/scripts/windows/privesc-tools.md)
 - [Windows Useful Commands](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/windows-commands.md)
+
+## Movement & Persistence(https://github.com/dopamin3rgic/oscp-scripts/tree/main/movement-persistence)
+- [Movement](https://github.com/dopamin3rgic/oscp-scripts/blob/main/movement-persistence/movement-notes.md)
+- [Persistence](https://github.com/dopamin3rgic/oscp-scripts/blob/main/movement-persistence/persistence-notes.md)
