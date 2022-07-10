@@ -82,3 +82,4 @@
 - [HackTricks Book Checklist](https://book.hacktricks.xyz/windows/checklist-windows-privilege-escalation)
 - [pwdump](https://github.com/Neohapsis/creddump7.git)
 - [PayloadsAllTheThings' Windows PrivEsc Methods](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Windows%20-%20Privilege%20Escalation.md)
+- [S1ren's windows privesc guide](https://sirensecurity.io/blog/windows-privilege-escalation-resources/)

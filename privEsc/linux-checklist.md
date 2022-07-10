@@ -74,3 +74,4 @@
 # Resources
 - [PayloadsAllTheThings' Linux PrivEsc Methods](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md)
 - [g0tmi1k's Linux PrivEsc Guide](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+- [S1ren's Linux PrivEsc Guide](https://sirensecurity.io/blog/linux-privilege-escalation-resources/)
