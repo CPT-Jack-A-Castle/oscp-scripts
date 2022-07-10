@@ -68,6 +68,8 @@ techniques for discovering web applciation vulnerabilities
         - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/web-extensions.txt:FUZZ -u http://domain/indexFUZZ`
     - vhosts
         - `ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u https://{ip-address}/ -H 'Host: FUZZ.{domain}.com'`
+- [nikto](https://github.com/sullo/nikto) - web server vulnerability scanner
+    - `nikto {ip-address} -timeout 20` (default port 80)
 
 ## SMB
 - Scan a network range for SMB enabled hosts
