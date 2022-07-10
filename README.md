@@ -5,7 +5,7 @@ Scripts, techniques, and notes for the OSCP exam
 Various utilities that faciliate different facets of hacking
 - [Shells & File Transfers](https://github.com/dopamin3rgic/oscp-scripts/blob/main/utilities/shells-and-transfers.md)
 
-## Recon / Enumeration 
+## [Recon / Enumeration](https://github.com/dopamin3rgic/oscp-scripts/tree/recon/recon-enum)
 Learn about a target and identify paths to exploitation
 
 ## Exploitation 
