@@ -12,7 +12,7 @@ Learn about a target and identify paths to exploitation
 TTPs to gain a foothold onto a vulnerale target
 
 ## [PrivEsc](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/README.md) 
-TTPs to eleavate privileges once you have a foothold
+TTPs to elevate privileges once you have a foothold
 
 ### Linux
 - [Linux PrivEsc Notes](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/linux-checklist.md)
