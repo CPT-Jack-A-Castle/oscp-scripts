@@ -42,8 +42,11 @@ Information gathering techniques that involve direct interaction with target ser
 Query DNS servers using host, nslookup, dig, or other tools.
 - Important record types: NS, A, MX, PTR, CNAME, TXT
 - Some nameservers will disallow zone transfers, some will allow. This may even differ across the same org's nameservers so **query each one**. 
+
+- zone transfer 
     - `host -l {name-server}` 
     - sometimes even internal DNS namespace will be exposed in exceptionally bad misconfiguration.
+    - `dnsrecon -d {domain} -t axfr`
 - DNSRecon - python script that automates lots of DNS tasks
     - `dnsrecon -d {domain} -t std`
 - dnsenum
@@ -63,13 +66,22 @@ techniques for discovering web applciation vulnerabilities
 - fuff - fuzzing tool that can be used to discover subdomains, hidden directories/files, vhosts, etc. 
     - subdomains
         - `ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u http://FUZZ.{domain}`
-    - hidden directories/files
-        - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt:FUZZ -u http://{domain}/FUZZ`
-        - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/web-extensions.txt:FUZZ -u http://domain/indexFUZZ`
+    - hidden directories/files/extensions , smallish
+        - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt:FUZZ -u http://{domain}/FUZZ/ -recursion`
+        - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/raft-large-files.txt:FUZZ -u http://{domain}/FUZZ -recursion`
+        - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/web-extensions.txt:FUZZ -u http://{domain}/indexFUZZ`
+    - beefy lists:
+        - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/combined_directories.txt:FUZZ -u http://domain/FUZZ -recursion`
+        - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/combined_words.txt:FUZZ -u http://domain/FUZZ -recursion`
     - vhosts
         - `ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u https://{ip-address}/ -H 'Host: FUZZ.{domain}.com'`
 - [nikto](https://github.com/sullo/nikto) - web server vulnerability scanner
     - `nikto {ip-address} -timeout 20` (default port 80)
+- manual inspection
+    - check `robots.txt` , `.svn`, `.DS_STORE`, and view the page source
+### Offsec Staff recommended wordlists
+- `/usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-files.txt`
+- `/usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-directories.txt`
 
 ## SMB
 - Scan a network range for SMB enabled hosts

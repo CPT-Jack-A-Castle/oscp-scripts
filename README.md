@@ -1,5 +1,5 @@
 # OSCP Scripts
-Scripts, techniques, and notes for the OSCP exam
+Scripts, techniques, notes and utilities for the OSCP exam
 
 ## Utilities
 Various utilities that faciliate different facets of hacking
@@ -9,7 +9,7 @@ Various utilities that faciliate different facets of hacking
 Learn about a target and identify paths to exploitation
 
 ## Exploitation 
-TTPs to gain a foothold onto a vulnerale target
+TTPs to gain a foothold onto a vulnerable target
 
 ## [PrivEsc](https://github.com/dopamin3rgic/oscp-scripts/blob/main/privEsc/README.md) 
 TTPs to elevate privileges once you have a foothold
