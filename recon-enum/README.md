@@ -1,5 +1,5 @@
 # Reconnaissance, enumeration, information gathering
-The goal of this phase is to thoroughly understand your target and the attack surface, and to determine what the best path to exploitation is. 
+The goal of this phase is to thoroughly understand your target, expand the potential attack surface, and to determine what the best path to exploitation is. 
 
 # Passive reconnaissance
 Review openly available information without direct interaction with the target.
@@ -75,10 +75,18 @@ techniques for discovering web applciation vulnerabilities
         - `ffuf -w /opt/useful/SecLists/Discovery/Web-Content/combined_words.txt:FUZZ -u http://domain/FUZZ -recursion`
     - vhosts
         - `ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt:FUZZ -u https://{ip-address}/ -H 'Host: FUZZ.{domain}.com'`
+ - dirb - fuzzing tool that offsec uses
+    -  `dirb http://{target-ip}`
 - [nikto](https://github.com/sullo/nikto) - web server vulnerability scanner
     - `nikto {ip-address} -timeout 20` (default port 80)
 - manual inspection
-    - check `robots.txt` , `.svn`, `.DS_STORE`, and view the page source
+    - check `robots.txt` ,`sitemap.xml`, `.svn`, `.DS_STORE`
+    - view the page source for references to plugins/libs, hidden form fields, prettify minimized jquery
+    - view server response headers
+    - underlying server software
+    - check for admin consoles like `manager/html` and `/phpmyadmin`
+        - sometimes hosted on custom ports, check the specific application server software documentation
+
 ### Offsec Staff recommended wordlists
 - `/usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-files.txt`
 - `/usr/share/wordlists/SecLists/Discovery/Web-Content/raft-large-directories.txt`
